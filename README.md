@@ -3,8 +3,9 @@
 The [oos-acemagic-s1](https://github.com/IO-Nji/oos-acemagic-s1) system dashboard for a
 **Raspberry Pi with a 3.5" 480x320 SPI touch display** (ILI9486/ILI9488 panel, XPT2046
 touch controller). Same six pages at 150 %, with touch buttons underneath and a
-look tuned for a small low-contrast panel: near-black background, bright text,
-heavier type and even spacing between the cards.
+look tuned for a small low-contrast panel: near-black blue background, near-white
+text, heavier and wider-spaced type, even spacing between the cards and their
+content centred.
 
 ![The six dashboard pages](docs/screenshots/overview.png)
 

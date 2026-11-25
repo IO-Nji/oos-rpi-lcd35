@@ -22,6 +22,7 @@ namespace device {
         p.chrome.margin = NavBar::MARGIN;
         p.chrome.barGap = NavBar::MARGIN;
         p.chrome.cardGap = NavBar::MARGIN;
+        p.chrome.centerCards = true;
         return p;
     }
     
