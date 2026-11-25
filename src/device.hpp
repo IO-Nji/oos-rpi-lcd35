@@ -31,4 +31,13 @@ namespace device {
         return {"display", "touch", "console_tty", "console_hook", "touch_swap_xy",
                 "touch_min_x", "touch_max_x", "touch_min_y", "touch_max_y"};
     }
+    
+    // A Pi with this display is typically a small always-on box, often an MQTT broker,
+    // so the MQTT page is on by default
+    inline Config defaultConfig() {
+        Config c = Config::defaultsFor(SERVICE_NAME);
+        c.pages = {"system", "network", "sensors", "mqtt", "docker", "services", "identity"};
+        c.deviceKeys = configKeys();
+        return c;
+    }
 }

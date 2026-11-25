@@ -94,12 +94,12 @@ static void testNavBar() {
     CHECK(NavBar::actionFor(page) == NavBar::Action::Next);
     
     // Actions drive the shared page manager
-    Config config = Config::defaultsFor(device::SERVICE_NAME);
+    Config config = device::defaultConfig();
     Dashboard dashboard(config, device::display());
     ScreenManager& screens = dashboard.screens();
-    CHECK(screens.pageCount() == 6 && screens.currentPage() == 0);
+    CHECK(screens.pageCount() == 7 && screens.currentPage() == 0);
     NavBar::apply(NavBar::Action::Previous, screens);
-    CHECK(screens.currentPage() == 5);
+    CHECK(screens.currentPage() == 6);
     NavBar::apply(NavBar::Action::Next, screens);
     NavBar::apply(NavBar::Action::Next, screens);
     CHECK(screens.currentPage() == 1);

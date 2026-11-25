@@ -2,12 +2,12 @@
 
 The [oos-acemagic-s1](https://github.com/IO-Nji/oos-acemagic-s1) system dashboard for a
 **Raspberry Pi with a 3.5" 480x320 SPI touch display** (ILI9486/ILI9488 panel, XPT2046
-touch controller). Same six pages at 150 %, with touch buttons underneath and a
+touch controller). Same pages at 150 %, plus MQTT by default, with touch buttons underneath and a
 look tuned for a small low-contrast panel: near-black blue background, near-white
 text, heavier and wider-spaced type, even spacing between the cards and their
 content centred.
 
-![The six dashboard pages](docs/screenshots/overview.png)
+![Dashboard pages](docs/screenshots/overview.png)
 
 *Screenshots are rendered by the bundled preview tool from sample data.*
 
@@ -19,12 +19,21 @@ content centred.
 
 ## What it shows
 
-System, Network (with Wi-Fi signal), Sensors, Docker, Services and Identity pages, a
-health summary in the footer, and alerts including low supply voltage — all described in the
+System, Network (with Wi-Fi signal), Sensors, MQTT, Docker, Services and Identity
+pages, a health summary in the footer, and alerts including low supply voltage — all
+described in the
 [oos-acemagic-s1 README](https://github.com/IO-Nji/oos-acemagic-s1#readme). The code
 for them is shared, not copied: this repository adds only what is specific to the Pi.
 
-On a Pi without Docker, remove `docker` from `pages` in the settings file. Power and
+The **MQTT** page is on by default here. It connects to the broker on this machine
+(`mqtt_host`, `mqtt_port`, optional `mqtt_user` / `mqtt_password`) as a read-only
+client and shows connected clients, messages in and out per minute, broker uptime,
+and a running log of messages on the topics in `mqtt_topics` (default `#`, everything).
+New messages appear at the bottom; tap **HOLD** to stay on the page and watch. If the
+broker cannot be reached the footer shows `MQTT OFFLINE`.
+
+On a Pi without Docker or without a broker, remove `docker` or `mqtt` from `pages`
+in the settings file. Power and
 fan readings are not available on a Pi and show N/A.
 
 ## Touch navigation
@@ -74,7 +83,7 @@ Paste the lines it prints into `/etc/oos-rpi-lcd35/config.conf` and start the se
 ## Configure
 
 `/etc/oos-rpi-lcd35/config.conf` has the settings shared with the S1 version
-(`page_interval`, `pages`, `services`, `disk`) plus:
+(`page_interval`, `pages`, `services`, `disk`, `mqtt_*`) plus:
 
 | Setting | Meaning | Default |
 | --- | --- | --- |

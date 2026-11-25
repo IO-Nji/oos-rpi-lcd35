@@ -118,8 +118,7 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    Config config = Config::defaultsFor(device::SERVICE_NAME);
-    config.deviceKeys = device::configKeys();
+    Config config = device::defaultConfig();
     std::vector<std::string> warnings;
     if (!config.load(configPath, warnings) && configGiven) {
         std::cerr << "Cannot read " << configPath << std::endl;

@@ -3,7 +3,7 @@
 #include "device.hpp"
 
 int main(int argc, char* argv[]) {
-    PreviewDevice pi{device::SERVICE_NAME, device::display(), device::configKeys(),
+    PreviewDevice pi{device::SERVICE_NAME, device::display(), device::defaultConfig().pages, device::configKeys(),
                      [](Dashboard& d) { NavBar().draw(d.framebuffer(), d.screens().hold()); }};
     return runPreview(argc, argv, pi);
 }
