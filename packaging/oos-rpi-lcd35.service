@@ -1,0 +1,18 @@
+[Unit]
+Description=oOS dashboard for the Raspberry Pi 3.5" SPI touch display
+Documentation=https://github.com/IO-Nji/oos-rpi-lcd35
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/oos-rpi-lcd35
+Restart=always
+RestartSec=5
+# Root is needed for the framebuffer, the input device and the console terminal
+NoNewPrivileges=yes
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
