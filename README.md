@@ -2,7 +2,9 @@
 
 The [oos-acemagic-s1](https://github.com/IO-Nji/oos-acemagic-s1) system dashboard for a
 **Raspberry Pi with a 3.5" 480x320 SPI touch display** (ILI9486/ILI9488 panel, XPT2046
-touch controller). Same six pages, same look, drawn at 150 % with a touch bar underneath.
+touch controller). Same six pages at 150 %, with touch buttons underneath and a
+look tuned for a small low-contrast panel: near-black background, bright text,
+heavier type and even spacing between the cards.
 
 ![The six dashboard pages](docs/screenshots/overview.png)
 
@@ -31,7 +33,7 @@ fan readings are not available on a Pi and show N/A.
 | **PREV** / **NEXT** | previous or next page |
 | swipe left / right across the page | next or previous page |
 | **HOLD** | stop automatic rotation; shows **HELD** until tapped again |
-| **CONSOLE** | hand the display to the text console; tap anywhere to return |
+| **TERM** | hand the display to the text console (terminal); tap anywhere to return |
 
 The console keeps its login session while the dashboard is showing, so you come back
 to the same shell. On a Pi 3 A+ the service uses about 2 % of one core.
@@ -43,7 +45,7 @@ to the same shell. On a Pi 3 A+ the service uses about 2 % of one core.
   On Raspberry Pi OS that is a `dtoverlay` line in `/boot/firmware/config.txt` for
   your display (for example `piscreen`, `waveshare35a` or `tft35a`), rotated to
   landscape.
-- For the CONSOLE button: a text console on the display (`fbcon=map:1` on the
+- For the TERM button: a text console on the display (`fbcon=map:1` on the
   kernel command line when the display is `/dev/fb1`).
 
 ## Install
@@ -93,8 +95,10 @@ tools/preview.cpp    offline renderer
 tests/               unit tests
 ```
 
-Pages are laid out in units of the S1's 320x170 panel. This display is 320 x 213 of
-those units at 150 %: the dashboard frame takes the top 170 and the touch bar the rest.
+Pages are laid out in units of the S1's 320x170 panel; this display is 320 x 213 of
+those units at 150 %. `src/device.hpp` and `src/ui/nav_bar.hpp` set the spacing (one
+6-unit rhythm for margins and gaps) and the button sizes, and the build selects the
+core's high-contrast palette.
 A fix or new page in the core reaches both devices; update with
 `git submodule update --remote core`.
 

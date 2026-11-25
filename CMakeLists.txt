@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(oos-rpi-lcd35 VERSION 0.9.0 LANGUAGES CXX)
+project(oos-rpi-lcd35 VERSION 0.9.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,6 +14,9 @@ endif()
 
 # -Wno-psabi: GCC notes about an old ARM calling-convention change are not about this code
 add_compile_options(-Wall -Wextra -Wno-psabi)
+
+# Small SPI panels show little contrast: use the darker, brighter palette
+add_compile_definitions(OOS_THEME_HIGH_CONTRAST)
 
 # Drawing, data providers and pages, shared with oos-acemagic-s1
 add_subdirectory(core)

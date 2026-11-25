@@ -3,7 +3,7 @@
 #include "ui/nav_bar.hpp"
 
 // What makes this device different from the S1: a 480x320 display showing the same
-// layout at 150 %, with room for a touch bar underneath.
+// pages at 150 %, spaced out for a low-contrast panel, with touch buttons underneath.
 namespace device {
     constexpr const char* SERVICE_NAME = "oos-rpi-lcd35";
     constexpr const char* DEFAULT_CONFIG = "/etc/oos-rpi-lcd35/config.conf";
@@ -15,6 +15,13 @@ namespace device {
         p.width = Layout::SCREEN_WIDTH;
         p.height = NavBar::DISPLAY_HEIGHT;
         p.scale = UiScale{3, 2};
+        
+        // No outer frame: on this panel the space is better spent between the cards
+        p.chrome.height = NavBar::DASHBOARD_HEIGHT;
+        p.chrome.framed = false;
+        p.chrome.margin = NavBar::MARGIN;
+        p.chrome.barGap = NavBar::MARGIN;
+        p.chrome.cardGap = NavBar::MARGIN;
         return p;
     }
     

@@ -65,9 +65,10 @@ static void testNavBar() {
     for (int i = 0; i < NavBar::BUTTON_COUNT; i++) {
         Rect r = NavBar::button(i);
         CHECK(r.x >= 0 && r.right() <= Layout::SCREEN_WIDTH);
-        CHECK(r.y >= Layout::SCREEN_HEIGHT && r.bottom() <= NavBar::DISPLAY_HEIGHT);
-        CHECK(r.w * 3 / 2 >= 100 && r.h * 3 / 2 >= 55);
-        if (i > 0) CHECK(r.x >= NavBar::button(i - 1).right());
+        CHECK(r.y >= device::display().chrome.footer().bottom() + NavBar::MARGIN);
+        CHECK(r.bottom() <= NavBar::DISPLAY_HEIGHT - NavBar::MARGIN);
+        CHECK(r.w * 3 / 2 >= 90 && r.h * 3 / 2 >= 45);     // device pixels: still a finger-sized target
+        if (i > 0) CHECK(r.x >= NavBar::button(i - 1).right() + NavBar::MARGIN);
     }
     
     auto tapOn = [](int i) {
@@ -82,6 +83,8 @@ static void testNavBar() {
     CHECK(tapOn(1) == NavBar::Action::ToggleHold);
     CHECK(tapOn(2) == NavBar::Action::Next);
     CHECK(tapOn(3) == NavBar::Action::Console);
+    CHECK(NavBar::button(0).x == NavBar::MARGIN);
+    CHECK(NavBar::button(3).right() == Layout::SCREEN_WIDTH - NavBar::MARGIN);
     
     Gesture page;
     page.kind = Gesture::Kind::Tap;

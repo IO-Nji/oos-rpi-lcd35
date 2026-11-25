@@ -4,26 +4,31 @@
 #include "ui/screen_manager.hpp"
 #include "ui/touch.hpp"
 
-// The strip of touch buttons under the dashboard frame, and what a gesture means.
-// The display is 320 x 213 layout units: the frame takes the top 170, this bar the rest.
+// The row of touch buttons under the dashboard, and what a gesture means.
+// The display is 320 x 213 layout units. Everything sits on one rhythm: MARGIN from
+// the display edge, and MARGIN between the header, the cards, the footer and the buttons.
 class NavBar {
 public:
     enum class Action { None, Previous, Next, ToggleHold, Console };
     
     static constexpr int DISPLAY_HEIGHT = 213;            // 320 device pixels at 150 %
+    static constexpr int MARGIN = 6;
     static constexpr int BUTTON_COUNT = 4;
-    static constexpr int GAP = 3;
-    static constexpr int X = Layout::BORDER_X;
-    static constexpr int Y = Layout::SCREEN_HEIGHT;       // directly under the frame
-    static constexpr int W = Layout::BORDER_W;
-    static constexpr int H = DISPLAY_HEIGHT - Y - Layout::OUTER_PADDING;
+    static constexpr int BUTTON_W = 61;                   // 91 x 46 device pixels
+    static constexpr int BUTTON_H = 31;
+    static constexpr int Y = DISPLAY_HEIGHT - MARGIN - BUTTON_H;
     
+    // The dashboard gets everything above the buttons
+    static constexpr int DASHBOARD_HEIGHT = Y;
+    
+    // Buttons are spread evenly, the outer two lining up with the cards above
     static Rect button(int index) {
-        return Rect(X, Y, W, H).column(index, BUTTON_COUNT, GAP);
+        const int span = Layout::SCREEN_WIDTH - 2 * MARGIN - BUTTON_W;
+        return Rect(MARGIN + span * index / (BUTTON_COUNT - 1), Y, BUTTON_W, BUTTON_H);
     }
     
     void draw(Framebuffer& fb, bool hold) const {
-        const char* labels[BUTTON_COUNT] = {"PREV", hold ? "HELD" : "HOLD", "NEXT", "CONSOLE"};
+        const char* labels[BUTTON_COUNT] = {"PREV", hold ? "HELD" : "HOLD", "NEXT", "TERM"};
         for (int i = 0; i < BUTTON_COUNT; i++) {
             Rect r = button(i);
             bool active = i == 1 && hold;
