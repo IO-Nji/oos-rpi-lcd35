@@ -21,8 +21,8 @@ public:
     // Copy fb to the display. Returns the number of rows written.
     int present(const Framebuffer& fb);
     
-    // Forget what is on the display, so the next present() writes everything
-    void invalidate() { shown_.clear(); }
+    // Blank the display; the next present() writes everything
+    void clear();
     
 private:
     bool openDevice(const std::string& device, int width, int height);

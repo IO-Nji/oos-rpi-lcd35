@@ -20,7 +20,7 @@ namespace device {
     
     // Settings this device adds to the shared config file
     inline std::set<std::string> configKeys() {
-        return {"display", "touch", "console_tty", "touch_swap_xy",
+        return {"display", "touch", "console_tty", "console_hook", "touch_swap_xy",
                 "touch_min_x", "touch_max_x", "touch_min_y", "touch_max_y"};
     }
 }

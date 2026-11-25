@@ -143,13 +143,10 @@ int main(int argc, char* argv[]) {
     bool haveTouch = touch.open(setting(config, "touch"));
     if (!haveTouch) std::cerr << "Touch disabled: " << touch.error() << std::endl;
     
-    Console console;
-    if (!console.open(setting(config, "console_tty", "/dev/tty1"))) {
-        std::cerr << "Console not managed: cannot open the terminal" << std::endl;
-    }
-    console.takeDisplay();
+    Console console(setting(config, "console_tty", "/dev/tty1"));
     
     if (calibrateMode) {
+        console.takeDisplay();
         if (!haveTouch) return 1;
         return calibrate(display, touch);
     }
@@ -174,6 +171,7 @@ int main(int argc, char* argv[]) {
     while (running) {
         auto now = std::chrono::steady_clock::now();
         if (!consoleHasDisplay && now >= nextFrame) {
+            if (console.takeDisplay()) display.clear();
             dashboard.renderFrame();
             navBar.draw(dashboard.framebuffer(), dashboard.screens().hold());
             display.present(dashboard.framebuffer());
@@ -205,8 +203,7 @@ int main(int argc, char* argv[]) {
                 // Any tap brings the dashboard back
                 if (gesture.kind == Gesture::Kind::Tap) {
                     consoleHasDisplay = false;
-                    console.takeDisplay();
-                    display.invalidate();
+                    display.clear();
                     nextFrame = std::chrono::steady_clock::now();
                 }
                 continue;
@@ -215,7 +212,8 @@ int main(int argc, char* argv[]) {
             NavBar::Action action = NavBar::actionFor(gesture);
             if (action == NavBar::Action::Console) {
                 consoleHasDisplay = true;
-                console.giveDisplay();
+                display.clear();
+                console.giveDisplay(setting(config, "console_hook"));
             } else if (action != NavBar::Action::None) {
                 NavBar::apply(action, dashboard.screens());
                 nextFrame = std::chrono::steady_clock::now();   // show the result at once
@@ -223,7 +221,8 @@ int main(int argc, char* argv[]) {
         }
     }
     
+    // Leave the console in charge of the screen; its destructor restores text mode
     dashboard.stopCollectors();
-    console.giveDisplay();
+    display.clear();
     return 0;
 }

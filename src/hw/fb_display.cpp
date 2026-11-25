@@ -87,6 +87,11 @@ void FbDisplay::close() {
     }
 }
 
+void FbDisplay::clear() {
+    if (memory_) std::memset(memory_, 0, memorySize_);
+    shown_.clear();
+}
+
 int FbDisplay::present(const Framebuffer& fb) {
     if (!memory_ || fb.deviceWidth() != width_ || fb.deviceHeight() != height_) return 0;
     
